@@ -1,0 +1,14 @@
+- name: user create on all server
+  hosts: all
+  tasks:
+    - name: user creation 
+      user: 
+        name: kareem
+        password: munna
+        uid: 0786
+        home: /tmp/kareem
+        shell: /bin/bash
+        comment: "A FILM BY KAREEM"
+  
+
+        

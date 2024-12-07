@@ -1,0 +1,11 @@
+- name: download selenium scripts from the git hub and change permission
+  hosts: all
+  tasks:
+    - name: download the selinum code
+      git: 
+       repo: https://github.com/IntelliqDevops/FunctionalTesting.git
+       dest: /tmp/test-git
+    - name: give execution permission
+      file: 
+       name: /tmp/test-git/testing.jar
+       mode: 700    

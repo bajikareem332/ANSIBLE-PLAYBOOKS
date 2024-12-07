@@ -1,0 +1,22 @@
+- name: create user and creatre directory in user home dirrectory and copy the password file and chaanege permission
+  hosts: all
+  tasks: 
+   - name: create user
+     user: 
+      name: kareebhai
+      password: munnabhai
+      uid: 7860
+      home: /tmp/kareembhai
+   - name: create directory
+     file: 
+      name: /tmp/kareembhai/dir1
+      state: directory
+   - name: copy password file
+     copy:
+      src: /etc/passwd
+      dest: /tmp/kareembhai/dir1    
+   - name: change permission
+     file:
+      name: /tmp/kareembhai/dir1/passwd
+      mode: 760    
+
