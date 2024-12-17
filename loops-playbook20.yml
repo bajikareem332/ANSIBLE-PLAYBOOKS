@@ -1,0 +1,36 @@
+- name: configuring tomcat
+  hosts: all
+  tasks:
+    - name: install tomcat10 and tomcat10-admin
+      apt:
+        name: "{{item.a}}"
+        state: "{{item.b}}"
+        update_cache: "{{item.c}}"
+      with_items:
+         - {a: tomcat10, b: present, c: yes}   
+         - {a: tomcat10-admin, b: present, c: no}    
+    - name: copy customized tomcat-users.xml
+      copy:
+       src: tomcat-users.xml
+       dest: /etc/tomcat10
+    - name: change port of tomcat 8080to 9999
+      replace:
+        regexp: 9090
+        replace: 9999
+        path: /etc/tomcat10/server.xml
+    - name: restart tomcat10
+      service:
+        name: tomcat10
+        state: restarted
+    - name: pause for 60 seconds
+      pause:
+        seconds: 60
+    - name: check tomcat response on 9999 port
+      uri:
+       url: "{{item}}"
+       status_code: 200 
+      with_items:
+        - http://172.31.21.3:9999
+        - http://172.31.30.50:9999 
+   
+              

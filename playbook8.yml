@@ -1,0 +1,38 @@
+- name: cofiguring tomcat on all server
+  hosts: all
+  tasks:
+    - name: install tomcat10
+      apt:
+        name: tomcat10
+        state: present
+        update_cache: yes
+    - name: install tomcat10-admin
+      apt:
+        name: tomcat10-admin 
+        state: present
+        update_cache: no
+    - name: copy coustomized tomcat-users.xml
+      copy:
+       src: tomcat-users.xml
+       dest: /etc/tomcat10
+    - name: change port of tomcat10 from 8080 to 9090
+      replace: 
+        regexp: 8080 
+        replace: 9090
+        path: /etc/tomcat10/server.xml
+    - name: restart tomcat
+      service:
+        name: tomcat10
+        state: restarted 
+    - name: check tomcat on server1
+      uri:
+       url: http://172.31.21.3:9090
+       status_code: 200
+    - name: check tomcat on server2
+      uri: 
+       url: http://172.31.30.50:9090
+       status_code: 200
+    - name: pause for 1 minute
+      pause: 
+        minute: 1
+          
